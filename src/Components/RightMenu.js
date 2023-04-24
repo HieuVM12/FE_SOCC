@@ -4,7 +4,7 @@ import { FaCrown, FaBell, FaRegHeart, FaSun, FaCogs } from "react-icons/fa";
 import Profile from "../img/profile.jpg";
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 
-function RightMenu() {
+function RightMenu({userProfile}) {
 
   const username=localStorage.getItem("username");
   const accessToken = localStorage.getItem("accessToken");
@@ -46,11 +46,10 @@ function RightMenu() {
         <i>
           <FaCogs />
         </i> */}
-        {accessToken!=null ? (<span onClick={dangXuat}>Đăng xuất</span>):(<div></div>)}
+        {accessToken ? (<span onClick={dangXuat}>Đăng xuất</span>):(<div></div>)}
 
         <div className="profileImage">
-          {/* <img src={Profile} alt="" /> */}
-          {accessToken!=null ? (<span>{username}</span>):(<span onClick={dangNhap}>Đăng nhập</span>)}
+          {accessToken!=null && userProfile ? (<span>{userProfile.username}</span>):(<span onClick={dangNhap}>Đăng nhập</span>)}
         </div>
       </div>
     </div>

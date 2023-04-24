@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Login.css";
 import axios from "axios";
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
+import {FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL} from "../constants";
 
 
 
@@ -132,8 +133,8 @@ function Login() {
         <div id="alternativeLogin">
           <label>Or sign in with:</label>
           <div id="iconGroup">
-            <a href="#" id="facebookIcon"><img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/46-facebook-512.png"></img></a>
-            <a href="#" id="googleIcon"><img src="https://img.icons8.com/ios/512/google-logo--v1.png"></img></a>
+            <a href={FACEBOOK_AUTH_URL} id="facebookIcon"><img src="https://cdn3.iconfinder.com/data/icons/picons-social/57/46-facebook-512.png"></img></a>
+            <a href={GOOGLE_AUTH_URL} id="googleIcon"><img src="https://img.icons8.com/ios/512/google-logo--v1.png"></img></a>
           </div>
         </div>
       </div>
