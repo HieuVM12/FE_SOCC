@@ -84,7 +84,7 @@ function Register(){
           
           var config = {
             method: 'post',
-            url: 'http://localhost:8081/auth/register',
+            url: 'http://localhost:8080/auth/register',
             headers: { 
               'Content-Type': 'application/json'
             },

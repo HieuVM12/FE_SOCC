@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/MusicPlayer.css";
+import { Songs } from "./Songs";
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import {
   FaRegHeart,
   FaHeart,
@@ -13,7 +15,9 @@ import {
 } from "react-icons/fa";
 import { BsDownload } from "react-icons/bs";
 
-function MusicPlayer({ song, imgSrc, auto }) {
+
+function MusicPlayer({ song, imgSrc, auto, songs }) {
+  // const [songs, setSongs] = useState(Songs);
   const [isLove, setLove] = useState(false);
   const [isPlaying, setPlay] = useState(false);
   //   duration state
@@ -23,6 +27,39 @@ function MusicPlayer({ song, imgSrc, auto }) {
   const audioPlayer = useRef(); //   reference to our audio component
   const progressBar = useRef(); //   reference to our prgressbar
   const animationRef = useRef(); //  reference to our animation
+
+  // chuyen nhac;
+  const location = useLocation();
+  const path = location.pathname; // "/home/dsd"
+  const param = path.split('/')[2]; // "dsd"
+  // console.log(param);
+  const navigate = useNavigate();
+
+
+
+  let i;
+  let tongsobai=0;
+  songs.forEach((item,index) => {
+    if(item.id==param){
+      i=index;
+    }
+    tongsobai++;
+  });
+
+  const baitruoc = () => {
+    console.log("Ok");
+    if(i>0){
+      navigate('/home/'+songs[i-1].id);
+      window.location.reload();
+    }
+  };
+
+  const baisau = () => {
+    if(i<tongsobai-1){
+      navigate('/home/'+songs[i+1].id);
+      window.location.reload();
+    }
+  };
 
   useEffect(() => {
     const seconds = Math.floor(audioPlayer.current.duration);
@@ -63,12 +100,12 @@ function MusicPlayer({ song, imgSrc, auto }) {
   const changeProgress = () => {
     audioPlayer.current.currentTime = progressBar.current.value;
 
-    // progressBar.current.style.setProperty(
-    //   "--played-width",
-    //   `${(progressBar.current.value / duration) * 100}%`
-    // );
+    progressBar.current.style.setProperty(
+      "--played-width",
+      `${(progressBar.current.value / duration) * 100}%`
+    );
 
-    // setCurrenttime(progressBar.current.value);
+    setCurrenttime(progressBar.current.value);
 
     changeCurrentTime();
   };
@@ -88,11 +125,9 @@ function MusicPlayer({ song, imgSrc, auto }) {
 
   return (
     <div className="musicPlayer">
-      <div className="songImage">
-        <img src={imgSrc} alt="" />
-      </div>
+      <p>{imgSrc}</p>
       <div className="songAttributes">
-        <audio src={song} preload="metadata" ref={audioPlayer} />
+        <audio src={song} preload="metadata" ref={audioPlayer}/>
 
         <div className="top">
           <div className="left">
@@ -113,13 +148,13 @@ function MusicPlayer({ song, imgSrc, auto }) {
           </div>
 
           <div className="middle">
-            <div className="back">
-              <i>
+            <div className="back" onClick={baitruoc}>
+              <i class="bai-truoc">
                 <FaStepBackward />
               </i>
-              <i>
+              {/* <i>
                 <FaBackward />
-              </i>
+              </i> */}
             </div>
             <div className="playPause" onClick={changePlayPause}>
               {isPlaying ? (
@@ -132,10 +167,10 @@ function MusicPlayer({ song, imgSrc, auto }) {
                 </i>
               )}
             </div>
-            <div className="forward">
-              <i>
+            <div className="forward" onClick={baisau}>
+              {/* <i>
                 <FaForward />
-              </i>
+              </i> */}
               <i>
                 <FaStepForward />
               </i>

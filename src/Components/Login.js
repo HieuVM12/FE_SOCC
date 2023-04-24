@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Login.css";
+import axios from "axios";
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
+
+
 
 // function Login(){
 //     return(<div class="login">
@@ -67,7 +71,40 @@ import "../styles/Login.css";
 
 function Login() {
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
+  const dangnhap = (e) =>{
+    e.preventDefault();
+    var data = JSON.stringify({
+      "username": username,
+      "password": password
+    });
+    
+    var config = {
+      method: 'post',
+      url: 'http://localhost:8080/auth/login',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(response.data.accessToken);
+      localStorage.setItem("accessToken",response.data.accessToken);
+      localStorage.setItem("username",username);
+      navigate("/");
+      window.location.reload();
+
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert("Sai tài khoản hoặc mật khẩu");
+    });
+  }
 
   return (
     <div id="root">
@@ -76,18 +113,20 @@ function Login() {
         <div>
           <div class="row">
             <label>Username</label>
-            <input type="text" placeholder="Enter your username" />
+            <input type="text" placeholder="Enter your username" 
+            onChange={(e) => setUsername(e.target.value)}/>
           </div>
           <div class="row">
             <label>Password</label>
-            <input type="password" placeholder="Enter your password" />
+            <input type="password" placeholder="Enter your password" 
+            onChange={(e) => setPassword(e.target.value)}/>
           </div>
           <div id="button" class="row">
-            <button type="submit">Đăng nhập</button>
-            <button id="dang-ky">Đăng ký</button>
+            <button type="submit" onClick={dangnhap}>Đăng nhập</button>
+            <button id="dang-ky" >Đăng ký</button>
           </div>
         </div>
-        <div>
+        <div className="quen-mat-khau">
           <a href="#">Quên mật khẩu?</a>
         </div>
         <div id="alternativeLogin">
